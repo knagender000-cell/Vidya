@@ -25,7 +25,14 @@ jobs:
           curl -fsSL "$SITE_URL/" -o www/index.html
           curl -fsSL "$SITE_URL/manifest.json" -o www/manifest.json
           curl -fsSL "$SITE_URL/icons/icon-192.png" -o www/icons/icon-192.png
-          npx cap init Vidya com.boss.vidya --web-dir www
+          cat > capacitor.config.json <<CFG
+          {
+            "appId": "com.boss.vidya2",
+            "appName": "Vidya",
+            "webDir": "www",
+            "server": { "url": "$SITE_URL" }
+          }
+          CFG
           npx cap add android
           sed -i 's#</manifest>#<uses-permission android:name="android.permission.RECORD_AUDIO"/><uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/><uses-permission android:name="android.permission.POST_NOTIFICATIONS"/></manifest>#' android/app/src/main/AndroidManifest.xml
           npx cap sync android
